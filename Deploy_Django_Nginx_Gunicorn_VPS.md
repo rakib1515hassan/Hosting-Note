@@ -92,6 +92,15 @@ exit
       Syntax:- unzip zip_file_name
       Example:- unzip miniblog.zip
       ```
+      - After Unzip Removing the Project Zip File from the Local Windows Machine
+      ```sh
+      Syntax:- sudo rm -r zip_file_name.zip
+      Example:- sudo rm -r miniblog.zip
+      ```
+      - To see the project folder how many files are in the project folder
+      ```sh
+      Syntax:- ls
+      ```
       
   2. Using Github
       - Open Project on VS Code then Create a .gitignore File (If needed)
