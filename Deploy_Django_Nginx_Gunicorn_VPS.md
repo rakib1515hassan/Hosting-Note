@@ -79,7 +79,7 @@ exit
       ```sh
       Syntax:- scp -P Remote_Server_Port Source_File_Path Destination_Path
       Example:- scp -P 1034 miniblog.zip raj@216.32.44.12:
-      Example:- scp -P 1034 -i ~/.ssh/rakib_ed25519 miniblog.zip raj@216.32.44.12:
+      Example:- scp -P 1034 -i ~/.ssh/id_ed25519 miniblog.zip raj@216.32.44.12:
       ```
       - Copied Successfully
       - Get Access to Remote Server via SSH
