@@ -25,7 +25,7 @@
 - Get Access to Remote Server via SSH
 ```sh
 Syntax:- ssh -p PORT USERNAME@HOSTIP
-Example:- ssh -p 1034 raj@216.32.44.12
+Example:- ssh -p 1034 rakib@216.32.44.12
 ```
 - Verify that all required softwares are installed
 ```sh
@@ -78,14 +78,14 @@ exit
       - Copy Zip File from Local Windows Machine to Linux Remote Server
       ```sh
       Syntax:- scp -P Remote_Server_Port Source_File_Path Destination_Path
-      Example:- scp -P 1034 miniblog.zip raj@216.32.44.12:
-      Example:- scp -P 1034 -i ~/.ssh/id_ed25519 miniblog.zip raj@216.32.44.12:
+      Example:- scp -P 1034 miniblog.zip rakib@216.32.44.12:
+      Example:- scp -P 1034 -i ~/.ssh/id_ed25519 miniblog.zip rakib@216.32.44.12:
       ```
       - Copied Successfully
       - Get Access to Remote Server via SSH
       ```sh
       Syntax:- ssh -p PORT USERNAME@HOSTIP
-      Example:- ssh -p 1034 raj@216.32.44.12
+      Example:- ssh -p 1034 rakib@216.32.44.12
       ```
       - Unzip the Copied Project Zip File
       ```sh
@@ -113,7 +113,7 @@ exit
       - If Permission Denied then Own .ssh then try again to Generate SSH Keys
       ```sh
       Syntax:- sudo chown -R user_name .ssh
-      Example:- sudo chown -R raj .ssh
+      Example:- sudo chown -R rakib .ssh
       ```
       - Open Public SSH Keys then copy the key
       ```sh
@@ -154,9 +154,9 @@ deactivate
 - Create System Socket File for Gunicorn
 ```sh
 Syntax:- sudo nano /etc/systemd/system/your_domain.gunicorn.socket
-Example:- sudo nano /etc/systemd/system/sonamkumari.com.gunicorn.socket
+Example:- sudo nano /etc/systemd/system/minibloges.com.gunicorn.socket
 ```
-- Write below code inside sonamkumari.com.gunicorn.socket File
+- Write below code inside minibloges.com.gunicorn.socket File
 ```sh
 Syntax:- 
 [Unit]
@@ -170,10 +170,10 @@ WantedBy=sockets.target
 
 Example:- 
 [Unit]
-Description=sonamkumari.com.gunicorn socket
+Description=minibloges.com.gunicorn socket
 
 [Socket]
-ListenStream=/run/sonamkumari.com.gunicorn.sock
+ListenStream=/run/minibloges.com.gunicorn.sock
 
 [Install]
 WantedBy=sockets.target
@@ -181,9 +181,9 @@ WantedBy=sockets.target
 - Create System Service File for Gunicorn
 ```sh
 Syntax:- sudo nano /etc/systemd/system/your_domain.gunicorn.service
-Example:- sudo nano /etc/systemd/system/sonamkumari.com.gunicorn.service
+Example:- sudo nano /etc/systemd/system/minibloges.com.gunicorn.service
 ```
-- Write below code inside sonamkumari.com.gunicorn.service File
+- Write below code inside minibloges.com.gunicorn.service File
 ```sh
 Syntax:-
 [Unit]
@@ -206,18 +206,18 @@ WantedBy=multi-user.target
 
 Example:-
 [Unit]
-Description=sonamkumari.com.gunicorn daemon
-Requires=sonamkumari.com.gunicorn.socket
+Description=minibloges.com.gunicorn daemon
+Requires=minibloges.com.gunicorn.socket
 After=network.target
 
 [Service]
-User=raj
-Group=raj
-WorkingDirectory=/home/raj/miniblog
-ExecStart=/home/raj/miniblog/mb/bin/gunicorn \
+User=rakib
+Group=rakib
+WorkingDirectory=/home/rakib/miniblog
+ExecStart=/home/rakib/miniblog/mb/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
-          --bind unix:/run/sonamkumari.com.gunicorn.sock \
+          --bind unix:/run/minibloges.com.gunicorn.sock \
           miniblog.wsgi:application
 
 [Install]
@@ -226,33 +226,33 @@ WantedBy=multi-user.target
 - Start Gunicorn Socket and Service
 ```sh
 Syntax:- sudo systemctl start your_domain.gunicorn.socket
-Example:- sudo systemctl start sonamkumari.com.gunicorn.socket
+Example:- sudo systemctl start minibloges.com.gunicorn.socket
 
 Syntax:- sudo systemctl start your_domain.gunicorn.service
-Example:- sudo systemctl start sonamkumari.com.gunicorn.service
+Example:- sudo systemctl start minibloges.com.gunicorn.service
 ```
 - Enable Gunicorn Socket and Service
 ```sh
 Syntax:- sudo systemctl enable your_domain.gunicorn.socket
-Example:- sudo systemctl enable sonamkumari.com.gunicorn.socket
+Example:- sudo systemctl enable minibloges.com.gunicorn.socket
 
 Syntax:- sudo systemctl enable your_domain.gunicorn.service
-Example:- sudo systemctl enable sonamkumari.com.gunicorn.service
+Example:- sudo systemctl enable minibloges.com.gunicorn.service
 ```
 - Check Gunicorn Status
 ```sh
-sudo systemctl status sonamkumari.com.gunicorn.socket
-sudo systemctl status sonamkumari.com.gunicorn.service
+sudo systemctl status minibloges.com.gunicorn.socket
+sudo systemctl status minibloges.com.gunicorn.service
 ```
 - Restart Gunicorn (You may need to restart everytime you make change in your project code)
 ```sh
 sudo systemctl daemon-reload
-sudo systemctl restart sonamkumari.com.gunicorn
+sudo systemctl restart minibloges.com.gunicorn
 ```
 - Create Virtual Host File
 ```sh
 Syntax:- sudo nano /etc/nginx/sites-available/your_domain
-Example:- sudo nano /etc/nginx/sites-available/sonamkumari.com
+Example:- sudo nano /etc/nginx/sites-available/minibloges.com
 ```
 - Write following Code in Virtual Host File
 ```sh
@@ -287,7 +287,7 @@ server{
     listen 80;
     listen [::]:80;
 
-    server_name sonamkumari.com www.sonamkumari.com;
+    server_name minibloges.com www.minibloges.com;
 
     location = /favicon.ico { access_log off; log_not_found off; }
 
@@ -296,7 +296,7 @@ server{
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_pass http://unix:/run/sonamkumari.com.gunicorn.sock;
+        proxy_pass http://unix:/run/minibloges.com.gunicorn.sock;
     }
 
     location  /static/ {
@@ -311,7 +311,7 @@ server{
 - Enable Virtual Host or Create Symbolic Link of Virtual Host File
 ```sh
 Syntax:- sudo ln -s /etc/nginx/sites-available/virtual_host_file /etc/nginx/sites-enabled/virtual_host_file
-Example:- sudo ln -s /etc/nginx/sites-available/sonamkumari.com /etc/nginx/sites-enabled/sonamkumari.com
+Example:- sudo ln -s /etc/nginx/sites-available/minibloges.com /etc/nginx/sites-enabled/minibloges.com
 ```
 - Check Configuration is Correct or Not
 ```sh
@@ -332,12 +332,12 @@ sudo service nginx restart
     ALLOWED_HOST = ["your_domain"]
     
     Example:-
-    ALLOWED_HOST = ["sonamkumari.com", "www.sonamkumari.com"]
+    ALLOWED_HOST = ["minibloges.com", "www.minibloges.com"]
     ```
     - Restart Gunicorn (You need to restart everytime you make change in your project code)
     ```sh
     sudo systemctl daemon-reload
-    sudo systemctl restart sonamkumari.com.gunicorn
+    sudo systemctl restart minibloges.com.gunicorn
     ```
 - Create required Directories inside /var/www We will use it to serve static and media files only
 ```sh
@@ -350,7 +350,7 @@ sudo mkdir static media
 ```sh
 cd /var/www
 Syntax:- sudo chown -R user:user project_folder_name
-Example:- sudo chown -R raj:raj miniblog
+Example:- sudo chown -R rakib:rakib miniblog
 ```
 - If we want to use Development's Media Files then We should move development's media files to public directory (Optional)
 ```sh
@@ -376,7 +376,7 @@ MEDIA_ROOT = "/var/www/miniblog/media/"
 - Restart Gunicorn (You need to restart everytime you make change in your project code)
 ```sh
 sudo systemctl daemon-reload
-sudo systemctl restart sonamkumari.com.gunicorn
+sudo systemctl restart minibloges.com.gunicorn
 ```
 - Activate Virtual Env
 ```sh
@@ -408,7 +408,7 @@ deactivate
 - Restart Gunicorn (You may need to restart everytime you make change in your project code)
 ```sh
 sudo systemctl daemon-reload
-sudo systemctl restart sonamkumari.com.gunicorn
+sudo systemctl restart minibloges.com.gunicorn
 ```
 - Restart Nginx
 ```sh
@@ -422,7 +422,7 @@ git pull
 - Restart Gunicorn (You may need to restart everytime you make change in your project code)
 ```sh
 sudo systemctl daemon-reload
-sudo systemctl restart sonamkumari.com.gunicorn
+sudo systemctl restart minibloges.com.gunicorn
 ```
 
 ##
@@ -528,7 +528,7 @@ whoami
 - Generate SSH Key for Github Action by Login into Remote Server then run below Command OR You can use old SSH Key But I am creating New one for Github Action
 ```sh
 Syntax:- ssh-keygen -f key_path -t ed25519 -C "your_email@example.com"
-Example:- ssh-keygen -f /home/raj/.ssh/gitaction_ed25519 -t ed25519 -C "gitactionautodep"
+Example:- ssh-keygen -f /home/rakib/.ssh/gitaction_ed25519 -t ed25519 -C "gitactionautodep"
 ```
 - Open Newly Created Public SSH Keys then copy the key
 ```sh
